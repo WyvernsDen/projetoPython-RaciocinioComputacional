@@ -21,7 +21,9 @@ def method_menu1():
             print(f"Selected: {selected_command_menu2}")
             print(method_menu1())
         else:
+            print(f"Selected: {selected_command_menu2}")
             print("Error: not a command")
+            print(method_menu2())
     selected_command_menu1 = str.lower(input("Command: "))
     if selected_command_menu1 == 'q':
         sys.exit(f"Selected: {selected_command_menu1}\nExiting...")
@@ -38,5 +40,7 @@ def method_menu1():
         print(f"Selected: {selected_command_menu1}")
         print(method_menu2())
     else:
+        print(f"Selected: {selected_command_menu1}")
         print("Error: not a command")
+        print(method_menu1())
     return selected_command_menu1
