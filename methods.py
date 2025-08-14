@@ -1,3 +1,8 @@
+# what the hell am i doing
+
+from variables import menu1, menu2
+import sys
+
 def method_menu1():
     print(menu1)
     def method_menu2():
