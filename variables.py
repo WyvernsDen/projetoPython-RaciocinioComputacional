@@ -50,3 +50,4 @@ class Menu:
 class Messages:
     error_unrecognized = "Erro: comando não reconhecido."
     exit = "\nSaindo...\n"
+    select_command = "Selecione um comando: "

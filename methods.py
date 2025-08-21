@@ -6,7 +6,7 @@ import sys
 def method_menu_principal():
     print(Menu.principal)
     def method_menu_operacional():
-        selected_command_menu_operacional = str.lower(input("Comando: "))
+        selected_command_menu_operacional = str.lower(input(Messages.select_command))
         if selected_command_menu_operacional == 'c':
             print(Menu.incluir)
             sys.exit(Messages.exit)
@@ -24,7 +24,7 @@ def method_menu_principal():
         else:
             print(Messages.error_unrecognized)
             print(method_menu_operacional())
-    selected_command_menu_principal = str.lower(input("Comando: "))
+    selected_command_menu_principal = str.lower(input(Messages.select_command))
     if selected_command_menu_principal == 'x':
         sys.exit(Messages.exit)
     elif selected_command_menu_principal == '1':
