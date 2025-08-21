@@ -1,46 +1,44 @@
 # what the hell am i doing
 
-from variables import menu1, menu2
+from variables import menu_1, menu_2, menu_a, menu_l, menu_u, menu_d, error_unrecognized
 import sys
 
-def method_menu1():
-    print(menu1)
-    def method_menu2():
-        print(menu2)
-        selected_command_menu2 = str.lower(input("Command: "))
-        if selected_command_menu2 == 'c':
-            print(f"Selected: {selected_command_menu2}\nStill in development.\nExiting...")
+def method_menu_1():
+    print(menu_1)
+    def method_menu_2():
+        print(menu_2)
+        selected_command_menu_2 = str.lower(input("Comando: "))
+        if selected_command_menu_2 == 'a':
+            print(menu_a)
             sys.exit()
-        elif selected_command_menu2 == 'p':
-            print(f"Selected: {selected_command_menu2}\nStill in development.\nExiting...")
+        elif selected_command_menu_2 == 'l':
+            print(menu_l)
             sys.exit()
-        elif selected_command_menu2 == 'd':
-            print(f"Selected: {selected_command_menu2}\nStill in development.\nExiting...")
+        elif selected_command_menu_2 == 'u':
+            print(menu_u)
             sys.exit()
-        elif selected_command_menu2 == 'x':
-            print(f"Selected: {selected_command_menu2}")
-            print(method_menu1())
+        elif selected_command_menu_2 == 'd':
+            print(menu_d)
+            sys.exit()
+        elif selected_command_menu_2 == 'q':
+            print(method_menu_1())
         else:
-            print(f"Selected: {selected_command_menu2}")
-            print("Error: not a command")
-            print(method_menu2())
-    selected_command_menu1 = str.lower(input("Command: "))
-    if selected_command_menu1 == 'q':
-        sys.exit(f"Selected: {selected_command_menu1}\nExiting...")
-    elif selected_command_menu1 == 'a':
-        print(f"Selected: {selected_command_menu1}")
-        print(method_menu2())
-    elif selected_command_menu1 == 'b':
-        print(f"Selected: {selected_command_menu1}")
-        print(method_menu2())
-    elif selected_command_menu1 == 'c':
-        print(f"Selected: {selected_command_menu1}")
-        print(method_menu2())
-    elif selected_command_menu1 == 'd':
-        print(f"Selected: {selected_command_menu1}")
-        print(method_menu2())
+            print(error_unrecognized)
+            print(method_menu_2())
+    selected_command_menu_1 = str.lower(input("Comando: "))
+    if selected_command_menu_1 == 'x':
+        sys.exit(f"Saindo...")
+    elif selected_command_menu_1 == '1':
+        print(method_menu_2())
+    elif selected_command_menu_1 == '2':
+        print(method_menu_2())
+    elif selected_command_menu_1 == '3':
+        print(method_menu_2())
+    elif selected_command_menu_1 == '4':
+        print(method_menu_2())
+    elif selected_command_menu_1 == '5':
+        print(method_menu_2())
     else:
-        print(f"Selected: {selected_command_menu1}")
-        print("Error: not a command")
-        print(method_menu1())
-    return selected_command_menu1
+        print(error_unrecognized)
+        print(method_menu_1())
+    return selected_command_menu_1
