@@ -1,30 +1,61 @@
 # seems simple enough
+# this has become a lot less simple in the past hour
 
-menu_1 = ("\n------  Menu Principal  ------\n\n"
-         "1 - Estudantes\n"
-         "2 - Disciplinas\n"
-         "3 - Professores\n"
-         "4 - Turmas\n"
-         "5 - Matrículas\n"
-         "x - Sair\n")
+class menu:
+    principal = ("\n=============  Menu Principal  =============\n\n"
+             "1 - Estudantes\n"
+             "2 - Disciplinas\n"
+             "3 - Professores\n"
+             "4 - Turmas\n"
+             "5 - Matrículas\n"
+             "x - Sair\n")
 
-menu_2 = ("\n-----  Menu Operacional  -----\n\n"
-         "a - Incluir\n"
-         "l - Listar\n"
-         "u - Atualizar\n"
-         "d - Excluir\n"
-         "q - Menu Principal\n")
+    estudantes = ("\n=====  Menu Operacional  [Estudantes]  =====\n\n"
+             "c - Incluir\n"
+             "l - Listar\n"
+             "u - Atualizar\n"
+             "d - Excluir\n"
+             "q - Menu Principal\n")
 
-menu_a = ("\n---------  Incluir  ---------\n\n"
-          "Ainda em desenvolvimento.\nSaindo...")
+    disciplinas = ("\n=====  Menu Operacional  [Disciplinas]  =====\n\n"
+             "c - Incluir\n"
+             "l - Listar\n"
+             "u - Atualizar\n"
+             "d - Excluir\n"
+             "q - Menu Principal\n")
 
-menu_l = ("\n----------  Lista  ----------\n\n"
-          "Ainda em desenvolvimento.\nSaindo...")
+    professores = ("\n=====  Menu Operacional  [Professores]  =====\n\n"
+             "c - Incluir\n"
+             "l - Listar\n"
+             "u - Atualizar\n"
+             "d - Excluir\n"
+             "q - Menu Principal\n")
 
-menu_u = ("\n--------  Atualizar  --------\n\n"
-          "Ainda em desenvolvimento.\nSaindo...")
+    turmas = ("\n=====  Menu Operacional  [Turmas]  =====\n\n"
+             "c - Incluir\n"
+             "l - Listar\n"
+             "u - Atualizar\n"
+             "d - Excluir\n"
+             "q - Menu Principal\n")
 
-menu_d = ("\n---------  Deletar  ---------\n\n"
-          "Ainda em desenvolvimento.\nSaindo...")
+    matriculas = ("\n=====  Menu Operacional  [Matrículas]  =====\n\n"
+             "c - Incluir\n"
+             "l - Listar\n"
+             "u - Atualizar\n"
+             "d - Excluir\n"
+             "q - Menu Principal\n")
 
-error_unrecognized = "Erro: comando não reconhecido."
+    incluir = ("\n---------  Incluir  ---------\n\n"
+              "Ainda em desenvolvimento.\nSaindo...")
+
+    listar = ("\n----------  Lista  ----------\n\n"
+              "Ainda em desenvolvimento.\nSaindo...")
+
+    atualizar = ("\n--------  Atualizar  --------\n\n"
+              "Ainda em desenvolvimento.\nSaindo...")
+
+    excluir = ("\n---------  Excluir  ---------\n\n"
+              "Ainda em desenvolvimento.\nSaindo...")
+
+class erro:
+    nao_reconhecido = "Erro: comando não reconhecido."
