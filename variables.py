@@ -28,4 +28,3 @@ menu_d = ("\n---------  Deletar  ---------\n\n"
           "Ainda em desenvolvimento.\nSaindo...")
 
 error_unrecognized = "Erro: comando não reconhecido."
-

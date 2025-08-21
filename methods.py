@@ -1,6 +1,7 @@
 # what the hell am i doing
 
-from variables import menu_1, menu_2, menu_a, menu_l, menu_u, menu_d, error_unrecognized
+from variables import (menu_1, menu_2, menu_a, menu_l,
+                       menu_u, menu_d, error_unrecognized)
 import sys
 
 def method_menu_1():
