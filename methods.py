@@ -1,5 +1,5 @@
 # what the hell am i doing
-# ez dubs just like java
+# ez dubs just like java (i still dont know wtf doing a week later)
 
 from variables import menu, erro
 import sys

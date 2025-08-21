@@ -1,5 +1,5 @@
 # seems simple enough
-# this has become a lot less simple in the past hour
+# this has become a lot less simple in the past week
 
 class menu:
     principal = ("\n=============  Menu Principal  =============\n\n"
