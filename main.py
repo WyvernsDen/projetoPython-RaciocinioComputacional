@@ -1,5 +1,7 @@
 # main application
 
-from methods import method_menu_principal
+from methods import main_menu
+from variables import Menu
 
-print(method_menu_principal())
+print(Menu.main)
+main_menu()

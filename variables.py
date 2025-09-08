@@ -1,7 +1,7 @@
 # defining variables
 
 class Menu:
-    principal = ("\n=============  Menu Principal  =============\n\n"
+    main = ("\n=============  Menu Principal  =============\n\n"
              "1 - Estudantes\n"
              "2 - Disciplinas\n"
              "3 - Professores\n"
@@ -38,6 +38,8 @@ class Menu:
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
+
+class CRUD:
     incluir = ("\n---------  Incluir  ---------\n\n"
               "Ainda em desenvolvimento.")
     listar = ("\n----------  Lista  ----------\n\n"
@@ -49,5 +51,6 @@ class Menu:
 
 class Messages:
     error_unrecognized = "Erro: comando não reconhecido."
+    error_dev = "Erro: comando em desenvolvimento."
     exit = "\nSaindo...\n"
     select_command = "Selecione um comando: "
