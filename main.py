@@ -3,7 +3,7 @@
 
 import sys
 
-# defining the strings beforehand to make the code easier to read
+# defining strings and simple methods
 class Menu:
     main = ("\n=============  Menu Principal  =============\n\n"
              "1 - Estudantes\n"
@@ -43,60 +43,79 @@ class Menu:
              "d - Excluir\n"
              "q - Menu Principal\n")
 
-class CRUD:
-    incluir = ("\n---------  Incluir  ---------\n\n"
-              "Ainda em desenvolvimento.")
-    listar = ("\n----------  Lista  ----------\n\n"
-              "Ainda em desenvolvimento.")
-    atualizar = ("\n--------  Atualizar  --------\n\n"
-              "Ainda em desenvolvimento.")
-    excluir = ("\n---------  Excluir  ---------\n\n"
-              "Ainda em desenvolvimento.")
+error_unrecognized = "\nErro: comando não reconhecido.\n"
+error_dev = "\nErro: comando em desenvolvimento."
+msg_exit = "\nSaindo..."
+select_command = "Informe o comando desejado: "
 
-error_unrecognized = "Erro: comando não reconhecido."
-error_dev = "Erro: comando em desenvolvimento."
-exit_msg = "\nSaindo...\n"
-select_command = "Selecione um comando: "
+def press_enter():
+    input("\nPressione `Enter` para continuar.")
 
-# defining methods for the menu loop and the CRUD system
+class Lists:
+    estudantes_nomes = []
+
+# defining methods for the menu loops and CRUD
 def main_menu():
     while True:
         choice = str.lower(input(select_command))
         if choice == '1':
             print(Menu.estudantes)
-            crud()
+            crud_estudantes()
         elif choice == '2':
-            print(Menu.disciplinas)
-            crud()
+            print(error_dev)
+            press_enter()
+            print(Menu.main)
+            continue
         elif choice == '3':
-            print(Menu.professores)
-            crud()
+            print(error_dev)
+            press_enter()
+            print(Menu.main)
+            continue
         elif choice == '4':
-            print(Menu.turmas)
-            crud()
+            print(error_dev)
+            press_enter()
+            print(Menu.main)
+            continue
         elif choice == '5':
-            print(Menu.matriculas)
-            crud()
+            print(error_dev)
+            press_enter()
+            print(Menu.main)
+            continue
         elif choice == 'x':
-            sys.exit(exit_msg)
+            sys.exit(msg_exit)
         else:
             print(error_unrecognized)
             continue
 
-def crud():
+def crud_estudantes():
     while True:
         choice = str.lower(input(select_command))
         if choice == 'c':
-            print(error_dev)
+            estudante = input("\nInforme o nome do(a) estudante: ")
+            Lists.estudantes_nomes.append(estudante)
+            print(f"\nEstudante `{estudante}` foi incluído(a) com êxito.")
+            press_enter()
+            print(Menu.estudantes)
             continue
         elif choice == 'l':
-            print(error_dev)
+            if len(Lists.estudantes_nomes) == 0:
+                print("\nNenhum estudante foi encontrado.")
+            else:
+                print(f"\nTotal de {len(Lists.estudantes_nomes)} estudante(s) encontrado(s): ")
+                for estudante in Lists.estudantes_nomes:
+                    print(estudante)
+            press_enter()
+            print(Menu.estudantes)
             continue
         elif choice == 'u':
             print(error_dev)
+            press_enter()
+            print(Menu.estudantes)
             continue
         elif choice == 'd':
             print(error_dev)
+            press_enter()
+            print(Menu.estudantes)
             continue
         elif choice == 'q':
             print(Menu.main)
