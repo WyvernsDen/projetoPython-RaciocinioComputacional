@@ -1,43 +1,37 @@
-# seems simple enough
-# this has become a lot less simple in the past week
+# defining variables
 
-class menu:
-    principal = ("\n=============  Menu Principal  =============\n\n"
+class Menu:
+    main = ("\n=============  Menu Principal  =============\n\n"
              "1 - Estudantes\n"
              "2 - Disciplinas\n"
              "3 - Professores\n"
              "4 - Turmas\n"
              "5 - Matrículas\n"
              "x - Sair\n")
-
     estudantes = ("\n=====  Menu Operacional  [Estudantes]  =====\n\n"
              "c - Incluir\n"
              "l - Listar\n"
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
-
     disciplinas = ("\n=====  Menu Operacional  [Disciplinas]  =====\n\n"
              "c - Incluir\n"
              "l - Listar\n"
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
-
     professores = ("\n=====  Menu Operacional  [Professores]  =====\n\n"
              "c - Incluir\n"
              "l - Listar\n"
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
-
-    turmas = ("\n=====  Menu Operacional  [Turmas]  =====\n\n"
+    turmas = ("\n=======  Menu Operacional  [Turmas]  =======\n\n"
              "c - Incluir\n"
              "l - Listar\n"
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
-
     matriculas = ("\n=====  Menu Operacional  [Matrículas]  =====\n\n"
              "c - Incluir\n"
              "l - Listar\n"
@@ -45,17 +39,18 @@ class menu:
              "d - Excluir\n"
              "q - Menu Principal\n")
 
+class CRUD:
     incluir = ("\n---------  Incluir  ---------\n\n"
-              "Ainda em desenvolvimento.\nSaindo...")
-
+              "Ainda em desenvolvimento.")
     listar = ("\n----------  Lista  ----------\n\n"
-              "Ainda em desenvolvimento.\nSaindo...")
-
+              "Ainda em desenvolvimento.")
     atualizar = ("\n--------  Atualizar  --------\n\n"
-              "Ainda em desenvolvimento.\nSaindo...")
-
+              "Ainda em desenvolvimento.")
     excluir = ("\n---------  Excluir  ---------\n\n"
-              "Ainda em desenvolvimento.\nSaindo...")
+              "Ainda em desenvolvimento.")
 
-class erro:
-    nao_reconhecido = "Erro: comando não reconhecido."
+class Messages:
+    error_unrecognized = "Erro: comando não reconhecido."
+    error_dev = "Erro: comando em desenvolvimento."
+    exit = "\nSaindo...\n"
+    select_command = "Selecione um comando: "

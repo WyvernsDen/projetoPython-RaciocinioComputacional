@@ -1,6 +1,7 @@
-# please god help me
-# pretty sure nietzsche was talking about python that one time
+# main application
 
-from methods import method_menu_principal
+from methods import main_menu
+from variables import Menu
 
-print(method_menu_principal())
+print(Menu.main)
+main_menu()
