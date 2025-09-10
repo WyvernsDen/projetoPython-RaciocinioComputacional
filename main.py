@@ -99,6 +99,7 @@ def crud_estudantes():
         if choice == 'c':
             if len(lista_estudantes) == 0:
                 estudante_codigo = 1
+            # CHECK IF THERE ARE EMPTY SPOTS WHEN CREATING
             else:
                 estudante_codigo = len(lista_estudantes) + 1
             estudante_nome = input("\nInforme o nome do(a) estudante: ")
@@ -186,7 +187,7 @@ def crud_estudantes():
                     print(f"\nEstudante com código {codigo_remover} não encontrado.")
                 else:
                     lista_estudantes.remove(estudante_remover)
-                    # CHECK IF CODE IS EMPTY AND MOVE DOWN
+                    # OR YOU CAN CHECK IF CODE IS EMPTY AND MOVE EVERYTHING DOWN
             press_enter()
             print(Menu.estudantes)
             continue
@@ -198,7 +199,6 @@ def crud_estudantes():
             print(error_unrecognized)
             press_enter()
             continue
-
 
 # prints menu and starts method
 print(Menu.main)
