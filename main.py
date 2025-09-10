@@ -46,7 +46,7 @@ class Menu:
                           "1 - Código\n"
                           "2 - Nome\n"
                           "3 - CPF\n"
-                          "b - Voltar")
+                          "b - Voltar\n")
 
 error_unrecognized = "\nErro: comando não reconhecido.\n"
 error_dev = "\nErro: comando em desenvolvimento."
@@ -126,19 +126,19 @@ def crud_estudantes():
             print(Menu.estudantes)
             continue
         elif choice == 'u':
-            while True:
-                if len(lista_estudantes) == 0:
-                    print("\nNenhum estudante foi encontrado.")
-                else:
-                    estudante_modificar = None
-                    codigo_estudante_modificar = input("\nInforme o código do estudante á ser modificado: ")
-                    for dicionario_modificar in lista_estudantes:
-                        if dicionario_modificar["codigo"] == int(codigo_estudante_modificar):
-                            estudante_modificar = dicionario_modificar
-                            print(f"\nVocê escolheu o(a) estudante N.º{codigo_estudante_modificar};"
-                                  f" Nome: {dicionario_modificar["nome"]}; "
-                                  f"CPF: {dicionario_modificar["cpf"]}.")
-                            break
+            if len(lista_estudantes) == 0:
+                print("\nNenhum estudante foi encontrado.")
+            else:
+                estudante_modificar = None
+                codigo_estudante_modificar = input("\nInforme o código do estudante á ser modificado: ")
+                for dicionario_modificar in lista_estudantes:
+                    if dicionario_modificar["codigo"] == int(codigo_estudante_modificar):
+                        estudante_modificar = dicionario_modificar
+                        print(f"\nVocê escolheu o(a) estudante N.º{codigo_estudante_modificar};"
+                              f" Nome: {dicionario_modificar["nome"]}; "
+                              f"CPF: {dicionario_modificar["cpf"]}.")
+                        break
+                while True:
                     if estudante_modificar is None:
                         print(f"\nEstudante com código {codigo_estudante_modificar} não encontrado.")
                         press_enter()
@@ -152,7 +152,6 @@ def crud_estudantes():
                                   f"Código antigo: {codigo_antigo}\n"
                                   f"Código novo: {estudante_modificar["codigo"]}")
                             press_enter()
-                            print(Menu.estudantes_modificar)
                         elif opcao_modificar == '2':
                             nome_antigo = estudante_modificar["nome"]
                             estudante_modificar["nome"] = input("\nInforme o nome novo: ")
@@ -160,7 +159,6 @@ def crud_estudantes():
                                   f"Nome antigo: {nome_antigo}\n"
                                   f"Nome novo: {estudante_modificar["nome"]}")
                             press_enter()
-                            print(Menu.estudantes_modificar)
                         elif opcao_modificar == '3':
                             cpf_antigo = estudante_modificar["cpf"]
                             estudante_modificar["cpf"] = input("\nInforme o CPF novo: ")
@@ -168,7 +166,6 @@ def crud_estudantes():
                                   f"CPF antigo: {cpf_antigo}\n"
                                   f"CPF novo: {estudante_modificar["cpf"]}")
                             press_enter()
-                            print(Menu.estudantes_modificar)
                         elif opcao_modificar == 'b':
                             print(Menu.estudantes)
                             break
