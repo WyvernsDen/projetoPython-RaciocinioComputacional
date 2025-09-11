@@ -97,21 +97,27 @@ def crud_estudantes():
     while True:
         choice = str.lower(input(select_command))
         if choice == 'c':
-            if len(lista_estudantes) == 0:
-                estudante_codigo = 1
-            # CHECK IF THERE ARE EMPTY SPOTS WHEN CREATING
-            else:
-                estudante_codigo = len(lista_estudantes) + 1
+            estudante_codigo = input("\nInforme o código do(a) estudante: ")
             estudante_nome = input("\nInforme o nome do(a) estudante: ")
             estudante_cpf = input("\nInforme o CPF do(a) estudante: ")
-            estudante_dict = {
-                "codigo": estudante_codigo,
-                "nome": estudante_nome,
-                "cpf": estudante_cpf
-            }
-            lista_estudantes.append(estudante_dict)
-            print(f"\nEstudante `N.º{estudante_codigo}; Nome:{estudante_nome}; CPF:{estudante_cpf}` foi incluído(a) com êxito.")
-            print(lista_estudantes)
+            for estudante_criar in lista_estudantes:
+                if int(estudante_codigo) in estudante_criar["codigo"]:
+                    print("\nEstudante com este código já existe.")
+                elif estudante_nome in estudante_criar["nome"]:
+                    print("\nEstudante com este nome já existe.")
+                elif estudante_cpf in estudante_criar["cpf"]:
+                    print("\nEstudante com este CPF já existe.")
+                else:
+                    estudante_dict = {
+                        "codigo": int(estudante_codigo),
+                        "nome": estudante_nome,
+                        "cpf": estudante_cpf
+                    }
+                    lista_estudantes.append(estudante_dict)
+                    print(f"\nEstudante `N.º{estudante_codigo}; "
+                          f"Nome:{estudante_nome}; CPF:{estudante_cpf}` "
+                          f"foi incluído(a) com êxito.")
+            # print(lista_estudantes)
             press_enter()
             print(Menu.estudantes)
         elif choice == 'l':
