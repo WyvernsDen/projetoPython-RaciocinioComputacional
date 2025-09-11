@@ -42,6 +42,11 @@ class Menu:
              "u - Atualizar\n"
              "d - Excluir\n"
              "q - Menu Principal\n")
+    estudantes_modificar = ("\n===========  Modificar Estudante  ===========\n\n"
+                          "1 - Código\n"
+                          "2 - Nome\n"
+                          "3 - CPF\n"
+                          "b - Voltar\n")
 
 error_unrecognized = "\nErro: comando não reconhecido.\n"
 error_dev = "\nErro: comando em desenvolvimento."
@@ -51,8 +56,7 @@ select_command = "Informe o comando desejado: "
 def press_enter():
     input("\nPressione `Enter` para continuar.")
 
-class Lists:
-    estudantes_nomes = []
+lista_estudantes = []
 
 # defining methods for the menu loops and CRUD
 def main_menu():
@@ -61,6 +65,7 @@ def main_menu():
         if choice == '1':
             print(Menu.estudantes)
             crud_estudantes()
+            break
         elif choice == '2':
             print(error_dev)
             press_enter()
@@ -85,35 +90,152 @@ def main_menu():
             sys.exit(msg_exit)
         else:
             print(error_unrecognized)
+            press_enter()
             continue
 
 def crud_estudantes():
     while True:
         choice = str.lower(input(select_command))
         if choice == 'c':
-            estudante = input("\nInforme o nome do(a) estudante: ")
-            Lists.estudantes_nomes.append(estudante)
-            print(f"\nEstudante `{estudante}` foi incluído(a) com êxito.")
+            estudante_codigo = int(input("\nInforme o código do(a) estudante: "))
+            estudante_nome = str(input("\nInforme o nome do(a) estudante: "))
+            estudante_cpf = str(input("\nInforme o CPF do(a) estudante: "))
+            if len(lista_estudantes) == 0:
+                estudante_dict = {
+                    "codigo": estudante_codigo,
+                    "nome": estudante_nome,
+                    "cpf": estudante_cpf
+                }
+                lista_estudantes.append(estudante_dict)
+                print(f"\nEstudante `N.º{estudante_codigo}   "
+                      f"Nome: {estudante_nome}   CPF: {estudante_cpf}` "
+                      f"foi incluído(a) com êxito.")
+            else:
+                codigo_igual = False
+                nome_igual = False
+                cpf_igual = False
+                nada_igual = False
+                for dicionario_criar in lista_estudantes:
+                    if dicionario_criar["codigo"] == estudante_codigo:
+                        codigo_igual = True
+                    if dicionario_criar["nome"] == estudante_nome:
+                        nome_igual = True
+                    if dicionario_criar["cpf"] == estudante_cpf:
+                        cpf_igual = True
+                    if not codigo_igual and not nome_igual and not cpf_igual:
+                        nada_igual = True
+                if nada_igual:
+                    estudante_dict = {
+                        "codigo": estudante_codigo,
+                        "nome": estudante_nome,
+                        "cpf": estudante_cpf
+                    }
+                    lista_estudantes.append(estudante_dict)
+                    print(f"\nEstudante `N.º{estudante_codigo}   "
+                          f"Nome: {estudante_nome}   CPF: {estudante_cpf}` "
+                          f"foi incluído(a) com êxito.")
+                    break
+                else:
+                    if cpf_igual and nome_igual and codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com todos dados iguais.")
+                    elif nome_igual and codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome e código.")
+                    elif cpf_igual and codigo_igual and not nome_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo código e CPF.")
+                    elif cpf_igual and nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome e CPF.")
+                    elif cpf_igual and not nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo CPF.")
+                    elif nome_igual and not codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome.")
+                    elif codigo_igual and not nome_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo código.")
+                    else:
+                        break
             press_enter()
             print(Menu.estudantes)
-            continue
         elif choice == 'l':
-            if len(Lists.estudantes_nomes) == 0:
-                print("\nNenhum estudante foi encontrado.")
+            if len(lista_estudantes) == 0:
+                print("\nComando indisponível: Nenhum(a) estudante foi encontrado(a).")
             else:
-                print(f"\nTotal de {len(Lists.estudantes_nomes)} estudante(s) encontrado(s): ")
-                for estudante in Lists.estudantes_nomes:
-                    print(estudante)
+                print(f"\nTotal de {len(lista_estudantes)} estudante(s) encontrado(s): ")
+                for dicionario_listar in lista_estudantes:
+                    print(f"N.º{dicionario_listar["codigo"]}   "
+                          f"Nome: {dicionario_listar["nome"]}   "
+                          f"CPF: {dicionario_listar["cpf"]}")
             press_enter()
             print(Menu.estudantes)
             continue
         elif choice == 'u':
-            print(error_dev)
-            press_enter()
-            print(Menu.estudantes)
-            continue
+            if len(lista_estudantes) == 0:
+                print("\nNenhum(a) estudante foi encontrado(a).")
+                press_enter()
+                print(Menu.estudantes)
+            else:
+                estudante_modificar = None
+                codigo_estudante_modificar = input("\nInforme o código do(a) estudante á ser modificado(a): ")
+                for dicionario_modificar in lista_estudantes:
+                    if dicionario_modificar["codigo"] == int(codigo_estudante_modificar):
+                        estudante_modificar = dicionario_modificar
+                        print(f"\nVocê escolheu o(a) estudante: `N.º{codigo_estudante_modificar}  "
+                              f" Nome: {dicionario_modificar["nome"]}   "
+                              f"CPF: {dicionario_modificar["cpf"]}`")
+                        break
+                while True:
+                    if estudante_modificar is None:
+                        print(f"\nEstudante com código {codigo_estudante_modificar} não encontrado(a).")
+                        press_enter()
+                    else:
+                        print(Menu.estudantes_modificar)
+                        opcao_modificar = str.lower(input(select_command))
+                        if opcao_modificar == '1':
+                            codigo_antigo = estudante_modificar["codigo"]
+                            estudante_modificar["codigo"] = int(input("\nInforme o código novo: "))
+                            print(f"\nCódigo modificado com êxito:\n"
+                                  f"Código antigo: {codigo_antigo}\n"
+                                  f"Código novo: {estudante_modificar["codigo"]}")
+                            press_enter()
+                        elif opcao_modificar == '2':
+                            nome_antigo = estudante_modificar["nome"]
+                            estudante_modificar["nome"] = input("\nInforme o nome novo: ")
+                            print(f"\nNome modificado com êxito:\n"
+                                  f"Nome antigo: {nome_antigo}\n"
+                                  f"Nome novo: {estudante_modificar["nome"]}")
+                            press_enter()
+                        elif opcao_modificar == '3':
+                            cpf_antigo = estudante_modificar["cpf"]
+                            estudante_modificar["cpf"] = input("\nInforme o CPF novo: ")
+                            print(f"\nCPF modificado com êxito:\n"
+                                  f"CPF antigo: {cpf_antigo}\n"
+                                  f"CPF novo: {estudante_modificar["cpf"]}")
+                            press_enter()
+                        elif opcao_modificar == 'b':
+                            print(Menu.estudantes)
+                            break
+                        else:
+                            print(error_unrecognized)
+                            press_enter()
         elif choice == 'd':
-            print(error_dev)
+            if len(lista_estudantes) == 0:
+                print("\nComando indisponível: Nenhum(a) estudante foi encontrado(a).")
+            else:
+                estudante_remover = None
+                codigo_remover = int(input("\nInforme o código do(a) estudante á ser removido(a): "))
+                for dicionario_remover in lista_estudantes:
+                    if dicionario_remover["codigo"] == codigo_remover:
+                        estudante_remover = dicionario_remover
+                        break
+                if estudante_remover is None:
+                    print(f"\nEstudante com o código {codigo_remover} não encontrado(a).")
+                else:
+                    lista_estudantes.remove(estudante_remover)
             press_enter()
             print(Menu.estudantes)
             continue
@@ -123,8 +245,10 @@ def crud_estudantes():
             break
         else:
             print(error_unrecognized)
+            press_enter()
             continue
 
 # prints menu and starts method
 print(Menu.main)
 main_menu()
+# print(Dictionaries.estudantes)
