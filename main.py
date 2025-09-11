@@ -100,6 +100,7 @@ def crud_estudantes():
             estudante_codigo = int(input("\nInforme o código do(a) estudante: "))
             estudante_nome = str(input("\nInforme o nome do(a) estudante: "))
             estudante_cpf = str(input("\nInforme o CPF do(a) estudante: "))
+        # first we're checking if the list is empty
             if len(lista_estudantes) == 0:
                 estudante_dict = {
                     "codigo": estudante_codigo,
@@ -110,6 +111,7 @@ def crud_estudantes():
                 print(f"\nEstudante `N.º{estudante_codigo}   "
                       f"Nome: {estudante_nome}   CPF: {estudante_cpf}` "
                       f"foi incluído(a) com êxito.")
+        # if it's not empty we're checking if any dictionary within the list has any of the same info
             else:
                 codigo_igual = False
                 nome_igual = False
@@ -124,6 +126,7 @@ def crud_estudantes():
                         cpf_igual = True
                     if not codigo_igual and not nome_igual and not cpf_igual:
                         nada_igual = True
+            # if none of the info is the same we're gonna go ahead and create a dictionary for that student
                 if nada_igual:
                     estudante_dict = {
                         "codigo": estudante_codigo,
@@ -135,6 +138,7 @@ def crud_estudantes():
                           f"Nome: {estudante_nome}   CPF: {estudante_cpf}` "
                           f"foi incluído(a) com êxito.")
                     break
+            # if any info is repeated we'll tell the user what is
                 else:
                     if cpf_igual and nome_igual and codigo_igual:
                         print("\nNão foi possível incluír este(a) estudante, "
@@ -159,6 +163,7 @@ def crud_estudantes():
                               "já existe um cadastro com o mesmo código.")
                     else:
                         break
+        # someone should probably fix this inconsistency...
             press_enter()
             print(Menu.estudantes)
         elif choice == 'l':
@@ -175,12 +180,14 @@ def crud_estudantes():
             continue
         elif choice == 'u':
             if len(lista_estudantes) == 0:
-                print("\nNenhum(a) estudante foi encontrado(a).")
+                print("\nComando indisponível: Nenhum(a) estudante foi encontrado(a).")
+            # here's the inconsistency...
                 press_enter()
                 print(Menu.estudantes)
             else:
                 estudante_modificar = None
                 codigo_estudante_modificar = input("\nInforme o código do(a) estudante á ser modificado(a): ")
+            # first we're choosing a dictionary to modify
                 for dicionario_modificar in lista_estudantes:
                     if dicionario_modificar["codigo"] == int(codigo_estudante_modificar):
                         estudante_modificar = dicionario_modificar
@@ -188,9 +195,10 @@ def crud_estudantes():
                               f" Nome: {dicionario_modificar["nome"]}   "
                               f"CPF: {dicionario_modificar["cpf"]}`")
                         break
+            # then we're implementing a menu for modifying the chosen dictionary
                 while True:
                     if estudante_modificar is None:
-                        print(f"\nEstudante com código {codigo_estudante_modificar} não encontrado(a).")
+                        print(f"\nEstudante N.º{codigo_estudante_modificar} não encontrado(a).")
                         press_enter()
                     else:
                         print(Menu.estudantes_modificar)
@@ -198,21 +206,21 @@ def crud_estudantes():
                         if opcao_modificar == '1':
                             codigo_antigo = estudante_modificar["codigo"]
                             estudante_modificar["codigo"] = int(input("\nInforme o código novo: "))
-                            print(f"\nCódigo modificado com êxito:\n"
+                            print(f"\nCódigo modificado com êxito.\n"
                                   f"Código antigo: {codigo_antigo}\n"
                                   f"Código novo: {estudante_modificar["codigo"]}")
                             press_enter()
                         elif opcao_modificar == '2':
                             nome_antigo = estudante_modificar["nome"]
                             estudante_modificar["nome"] = input("\nInforme o nome novo: ")
-                            print(f"\nNome modificado com êxito:\n"
+                            print(f"\nNome modificado com êxito.\n"
                                   f"Nome antigo: {nome_antigo}\n"
                                   f"Nome novo: {estudante_modificar["nome"]}")
                             press_enter()
                         elif opcao_modificar == '3':
                             cpf_antigo = estudante_modificar["cpf"]
                             estudante_modificar["cpf"] = input("\nInforme o CPF novo: ")
-                            print(f"\nCPF modificado com êxito:\n"
+                            print(f"\nCPF modificado com êxito.\n"
                                   f"CPF antigo: {cpf_antigo}\n"
                                   f"CPF novo: {estudante_modificar["cpf"]}")
                             press_enter()
