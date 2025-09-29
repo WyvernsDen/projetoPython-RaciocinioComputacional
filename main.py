@@ -3,8 +3,7 @@
 import json
 import sys
 
-from setuptools.command.bdist_egg import strip_module
-
+# defining basic strings and methods
 error_unrecognized = "\nErro: comando não reconhecido."
 error_undefined = "Erro: não definido."
 error_dev = "\nErro: comando em desenvolvimento."
@@ -151,82 +150,100 @@ class Estudante:
                     "q - Menu Principal")
 
     def __init__(self):
-
         try:
             with open("estudantes.json", "r", encoding="utf-8") as file:
                 self.lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.lista = []
 
     def incluir(self, str_op_menu, main_choice):
-
-        estudante_codigo = int(input("\nInforme o código do(a) estudante: "))
-        estudante_nome = str(input("\nInforme o nome do(a) estudante: "))
-        estudante_cpf = str(input("\nInforme o CPF do(a) estudante: "))
-        str_success = (f"\nEstudante N.º{estudante_codigo} "
-                  f"com o nome '{estudante_nome}' e o CPF '{estudante_cpf}' "
+        codigo_valido = True
+        cpf_valido = False
+        input_codigo = input("\nInforme o código do(a) estudante: ")
+        nome = str(input("\nInforme o nome do(a) estudante: "))
+        input_cpf = str(input("\nInforme o CPF do(a) estudante: "))
+        cpf = (f"{input_cpf[:3]}"
+               f".{input_cpf[3:6]}"
+               f".{input_cpf[6:9]}"
+               f"-{input_cpf[9:]}")
+        try:
+            codigo = int(input_codigo)
+        except ValueError:
+            codigo = input_codigo
+            codigo_valido = False
+        if len(input_cpf.strip(".-")) == 11:
+            cpf_valido = True
+        str_success = (f"\nEstudante N.º{codigo} "
+                  f"com o nome '{nome}' e o CPF '{cpf}' "
                   f"foi incluído(a) com êxito.")
-
-        if len(self.lista) == 0:
-            # first we're checking if the list is empty
-            estudante_dict = {
-                "codigo": estudante_codigo,
-                "nome": estudante_nome,
-                "cpf": estudante_cpf
-            }
-            self.lista.append(estudante_dict)
-            with open("estudantes.json", "w", encoding="utf-8") as file:
-                json.dump(self.lista, file, ensure_ascii=False)
-            print(str_success)
-        else:
-            # if it's not empty we're checking if any dictionary within the list has any of the same info
-            codigo_igual = False
-            nome_igual = False
-            cpf_igual = False
-            nada_igual = False
-            for dicionario_criar in self.lista:
-                if dicionario_criar["codigo"] == estudante_codigo:
-                    codigo_igual = True
-                if dicionario_criar["nome"] == estudante_nome:
-                    nome_igual = True
-                if dicionario_criar["cpf"] == estudante_cpf:
-                    cpf_igual = True
-                if not codigo_igual and not nome_igual and not cpf_igual:
-                    nada_igual = True
-            if nada_igual:
-                # if none of the info is the same we're gonna go ahead and create a dictionary for that student
-                estudante_dict = {
-                    "codigo": estudante_codigo,
-                    "nome": estudante_nome,
-                    "cpf": estudante_cpf
+        if codigo_valido and cpf_valido:
+            if len(self.lista) == 0:
+                # first we're checking if the list is empty
+                dictionary = {
+                    "codigo": codigo,
+                    "nome": nome,
+                    "cpf": cpf
                 }
-                self.lista.append(estudante_dict)
+                self.lista.append(dictionary)
                 with open("estudantes.json", "w", encoding="utf-8") as file:
                     json.dump(self.lista, file, ensure_ascii=False)
                 print(str_success)
-            # if any info is repeated we'll tell the user what is
             else:
-                if cpf_igual and nome_igual and codigo_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com todos dados iguais.")
-                elif nome_igual and codigo_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo nome e código.")
-                elif cpf_igual and codigo_igual and not nome_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo código e CPF.")
-                elif cpf_igual and nome_igual and not codigo_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo nome e CPF.")
-                elif cpf_igual and not nome_igual and not codigo_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo CPF.")
-                elif nome_igual and not codigo_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo nome.")
-                elif codigo_igual and not nome_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) estudante, "
-                          "já existe um cadastro com o mesmo código.")
+                # if it's not empty we're checking if any dictionary within the list has any of the same info
+                codigo_igual = False
+                nome_igual = False
+                cpf_igual = False
+                nada_igual = False
+                for dicionario_criar in self.lista:
+                    if dicionario_criar["codigo"] == codigo:
+                        codigo_igual = True
+                    if dicionario_criar["nome"] == nome:
+                        nome_igual = True
+                    if dicionario_criar["cpf"] == cpf:
+                        cpf_igual = True
+                    if not codigo_igual and not nome_igual and not cpf_igual:
+                        nada_igual = True
+                if nada_igual:
+                    # if none of the info is the same we're gonna go ahead and create a dictionary for that student
+                    dictionary = {
+                        "codigo": codigo,
+                        "nome": nome,
+                        "cpf": cpf
+                    }
+                    self.lista.append(dictionary)
+                    with open("estudantes.json", "w", encoding="utf-8") as file:
+                        json.dump(self.lista, file, ensure_ascii=False)
+                    print(str_success)
+                # if any info is repeated we'll tell the user what is
+                else:
+                    if cpf_igual and nome_igual and codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com todos dados iguais.")
+                    elif nome_igual and codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome e código.")
+                    elif cpf_igual and codigo_igual and not nome_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo código e CPF.")
+                    elif cpf_igual and nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome e CPF.")
+                    elif cpf_igual and not nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo CPF.")
+                    elif nome_igual and not codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo nome.")
+                    elif codigo_igual and not nome_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) estudante, "
+                              "já existe um cadastro com o mesmo código.")
+        else:
+            if codigo_valido and not cpf_valido:
+                print("\nCPF inválido, tente novamente com um CPF válido.")
+            elif not codigo_valido and cpf_valido:
+                print("\nCódigo inválido, tente novamente com um código válido.")
+            elif not codigo_valido and not cpf_valido:
+                print("\nCódigo e CPF inválidos, tente novamente com dados válidos.")
         # SOMEONE should probably fix this inconsistency with method_press_enter...
         method_press_enter()
         print(str_op_menu)
@@ -384,23 +401,25 @@ class Disciplina:
                    "q - Menu Principal")
 
     def __init__(self):
+        nome = None
+        codigo = None
         try:
             with open("disciplinas.json", "r", encoding="utf-8") as file:
                 self.lista = json.load(file)
-        except:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.lista = []
 
     def incluir(self, str_op_menu, main_choice):
         def text_success():
-            print(f"\nDisciplina N.º{disciplina_codigo} de "
-                  f"'{disciplina_nome}' foi incluída com êxito.")
-        disciplina_codigo = int(input("\nInforme o código do(a) disciplina: "))
-        disciplina_nome = str(input("\nInforme o nome do(a) disciplina: "))
+            print(f"\nDisciplina N.º{codigo} de "
+                  f"'{nome}' foi incluída com êxito.")
+        codigo = int(input("\nInforme o código do(a) disciplina: "))
+        nome = str(input("\nInforme o nome do(a) disciplina: "))
         if len(self.lista) == 0:
         # first we're checking if the list is empty
             disciplina_dict = {
-                "codigo": disciplina_codigo,
-                "nome": disciplina_nome,
+                "codigo": codigo,
+                "nome": nome,
             }
             self.lista.append(disciplina_dict)
             with open("disciplinas.json", "w", encoding="utf-8") as file_disciplinas:
@@ -412,17 +431,17 @@ class Disciplina:
             nome_igual = False
             nada_igual = False
             for dicionario_criar in self.lista:
-                if dicionario_criar["codigo"] == disciplina_codigo:
+                if dicionario_criar["codigo"] == codigo:
                     codigo_igual = True
-                if dicionario_criar["nome"] == disciplina_nome:
+                if dicionario_criar["nome"] == nome:
                     nome_igual = True
                 if not codigo_igual and not nome_igual:
                     nada_igual = True
             if nada_igual:
             # if none of the info is the same we're gonna go ahead and create a dictionary for that subject
                 disciplina_dict = {
-                    "codigo": disciplina_codigo,
-                    "nome": disciplina_nome,
+                    "codigo": codigo,
+                    "nome": nome,
                 }
                 self.lista.append(disciplina_dict)
                 with open("disciplinas.json", "w", encoding="utf-8") as file_disciplinas:
@@ -566,7 +585,6 @@ class Disciplina:
         print(str_op_menu)
         method_op_menu(main_choice)
 
-
 class Professor:
 
     str_op_menu = ("\n=====  Menu Operacional  [Professores]  =====\n\n"
@@ -580,77 +598,97 @@ class Professor:
         try:
             with open("professores.json", "r", encoding="utf-8") as file:
                 self.lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.lista = []
 
     def incluir(self, str_op_menu, main_choice):
-        def text_success():
-            print(f"\nProfessor(a) N.º{professor_codigo} "
-                  f"com o nome '{professor_nome}' e o CPF '{professor_cpf}' "
-                  f"foi incluído(a) com êxito.")
-        professor_codigo = int(input("\nInforme o código do(a) professor(a): "))
-        professor_nome = str(input("\nInforme o nome do(a) professor(a): "))
-        professor_cpf = str(input("\nInforme o CPF do(a) professor(a): "))
-        if len(self.lista) == 0:
-        # first we're checking if the list is empty
-            professor_dict = {
-                "codigo": professor_codigo,
-                "nome": professor_nome,
-                "cpf": professor_cpf
-            }
-            self.lista.append(professor_dict)
-            with open("professores.json", "w", encoding="utf-8") as file:
-                json.dump(self.lista, file, ensure_ascii=False)
-            text_success()
-        else:
-        # if it's not empty we're checking if any dictionary within the list has any of the same info
-            codigo_igual = False
-            nome_igual = False
-            cpf_igual = False
-            nada_igual = False
-            for dicionario_criar in self.lista:
-                if dicionario_criar["codigo"] == professor_codigo:
-                    codigo_igual = True
-                if dicionario_criar["nome"] == professor_nome:
-                    nome_igual = True
-                if dicionario_criar["cpf"] == professor_cpf:
-                    cpf_igual = True
-                if not codigo_igual and not nome_igual and not cpf_igual:
-                    nada_igual = True
-            if nada_igual:
-            # if none of the info is the same we're gonna go ahead and create a dictionary for that student
-                professor_dict = {
-                    "codigo": professor_codigo,
-                    "nome": professor_nome,
-                    "cpf": professor_cpf
+        codigo_valido = True
+        cpf_valido = False
+        input_codigo = input("\nInforme o código do(a) professor(a): ")
+        nome = str(input("\nInforme o nome do(a) professor(a): "))
+        input_cpf = str(input("\nInforme o CPF do(a) professor(a): "))
+        cpf = (f"{input_cpf[:3]}"
+               f".{input_cpf[3:6]}"
+               f".{input_cpf[6:9]}"
+               f"-{input_cpf[9:]}")
+        try:
+            codigo = int(input_codigo)
+        except ValueError:
+            codigo = input_codigo
+            codigo_valido = False
+        if len(input_cpf.strip(".-")) == 11:
+            cpf_valido = True
+        str_success = (f"\nProfessor(a) N.º{codigo} "
+                       f"com o nome '{nome}' e o CPF '{cpf}' "
+                       f"foi incluído(a) com êxito.")
+        if cpf_valido and codigo_valido:
+            if len(self.lista) == 0:
+            # first we're checking if the list is empty
+                dictionary = {
+                    "codigo": codigo,
+                    "nome": nome,
+                    "cpf": cpf
                 }
-                self.lista.append(professor_dict)
+                self.lista.append(dictionary)
                 with open("professores.json", "w", encoding="utf-8") as file:
                     json.dump(self.lista, file, ensure_ascii=False)
-                text_success()
-            # if any info is repeated we'll tell the user what is
+                print(str_success)
             else:
-                if cpf_igual and nome_igual and codigo_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com todos dados iguais.")
-                elif nome_igual and codigo_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo nome e código.")
-                elif cpf_igual and codigo_igual and not nome_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo código e CPF.")
-                elif cpf_igual and nome_igual and not codigo_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo nome e CPF.")
-                elif cpf_igual and not nome_igual and not codigo_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo CPF.")
-                elif nome_igual and not codigo_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo nome.")
-                elif codigo_igual and not nome_igual and not cpf_igual:
-                    print("\nNão foi possível incluír este(a) professor(a), "
-                          "já existe um cadastro com o mesmo código.")
+            # if it's not empty we're checking if any dictionary within the list has any of the same info
+                codigo_igual = False
+                nome_igual = False
+                cpf_igual = False
+                nada_igual = False
+                for dicionario_criar in self.lista:
+                    if dicionario_criar["codigo"] == codigo:
+                        codigo_igual = True
+                    if dicionario_criar["nome"] == nome:
+                        nome_igual = True
+                    if dicionario_criar["cpf"] == cpf:
+                        cpf_igual = True
+                    if not codigo_igual and not nome_igual and not cpf_igual:
+                        nada_igual = True
+                if nada_igual:
+                # if none of the info is the same we're gonna go ahead and create a dictionary for that student
+                    dictionary = {
+                        "codigo": codigo,
+                        "nome": nome,
+                        "cpf": cpf
+                    }
+                    self.lista.append(dictionary)
+                    with open("professores.json", "w", encoding="utf-8") as file:
+                        json.dump(self.lista, file, ensure_ascii=False)
+                    print(str_success)
+                # if any info is repeated we'll tell the user what is
+                else:
+                    if cpf_igual and nome_igual and codigo_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com todos dados iguais.")
+                    elif nome_igual and codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo nome e código.")
+                    elif cpf_igual and codigo_igual and not nome_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo código e CPF.")
+                    elif cpf_igual and nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo nome e CPF.")
+                    elif cpf_igual and not nome_igual and not codigo_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo CPF.")
+                    elif nome_igual and not codigo_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo nome.")
+                    elif codigo_igual and not nome_igual and not cpf_igual:
+                        print("\nNão foi possível incluír este(a) professor(a), "
+                              "já existe um cadastro com o mesmo código.")
+        else:
+            if codigo_valido and not cpf_valido:
+                print("\nCPF inválido, tente novamente com um CPF válido.")
+            elif not codigo_valido and cpf_valido:
+                print("\nCódigo inválido, tente novamente com um código válido.")
+            elif not codigo_valido and not cpf_valido:
+                print("\nCódigo e CPF inválidos, tente novamente com dados válidos.")
         # SOMEONE should probably fix this inconsistency with method_press_enter...
         method_press_enter()
         print(str_op_menu)
@@ -812,8 +850,18 @@ class Turma:
         try:
             with open("turmas.json", "r", encoding="utf-8") as file:
                 self.lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.lista = []
+        try:
+            with open("disciplinas.json", "r", encoding="utf-8") as file:
+                self.disciplina_lista = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.disciplina_lista = []
+        try:
+            with open("professores.json", "r", encoding="utf-8") as file:
+                self.professor_lista = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.professor_lista = []
 
     def incluir(self, str_op_menu, main_choice):
         def text_success():
@@ -825,23 +873,23 @@ class Turma:
         disciplina_codigo = int(input("\nInforme o código da disciplina: "))
         professor_existe = False
         disciplina_existe = False
-        for check_professor in lista_professores:
+        for check_professor in self.professor_lista:
             if check_professor["codigo"] == professor_codigo:
                 professor_existe = True
                 professor_nome = check_professor["nome"]
-        for check_disciplina in lista_disciplinas:
+        for check_disciplina in self.disciplina_lista:
             if check_disciplina["codigo"] == disciplina_codigo:
                 disciplina_existe = True
                 disciplina_nome = check_disciplina["nome"]
         if professor_existe and disciplina_existe:
         # first we're checking if the list is empty
             if len(self.lista) == 0:
-                turma_dict = {
-                    "turma_codigo": turma_codigo,
-                    "professor_codigo": professor_codigo,
-                    "disciplina_codigo": disciplina_codigo
+                dictionary = {
+                    "turma_codigo": int(turma_codigo),
+                    "professor_codigo": int(professor_codigo),
+                    "disciplina_codigo": int(disciplina_codigo)
                 }
-                self.lista.append(turma_dict)
+                self.lista.append(dictionary)
                 with open("turmas.json", "w", encoding="utf-8") as file:
                     json.dump(self.lista, file, ensure_ascii=False)
                 text_success()
@@ -853,12 +901,12 @@ class Turma:
                         codigo_igual_turma = True
                 if not codigo_igual_turma:
                     # if none of them have the same # we'll create a dictionary for that class
-                    turma_dict = {
-                        "turma_codigo": turma_codigo,
-                        "professor_codigo": professor_codigo,
-                        "disciplina_codigo": disciplina_codigo
+                    dictionary = {
+                        "turma_codigo": int(turma_codigo),
+                        "professor_codigo": int(professor_codigo),
+                        "disciplina_codigo": int(disciplina_codigo)
                     }
-                    self.lista.append(turma_dict)
+                    self.lista.append(dictionary)
                     with open("turmas.json", "w", encoding="utf-8") as file:
                         json.dump(self.lista, file, ensure_ascii=False)
                     text_success()
@@ -869,13 +917,13 @@ class Turma:
                               "já existe uma turma com o mesmo código.")
         # if any of the checks fail we'll tell the user what did
         elif not professor_existe and not disciplina_existe:
-            print(f"Professor(a) e disciplina não encontrados, "
+            print(f"\nProfessor(a) e disciplina não encontrados, "
                   f"tente novamente com cadastros existentes, ou crie cadastros novos.")
         elif not professor_existe and disciplina_existe:
-            print(f"Professor(a) não encontrado(a), "
+            print(f"\nProfessor(a) não encontrado(a), "
                   f"tente novamente com um cadastro existente, ou crie um novo.")
         elif professor_existe and not disciplina_existe:
-            print(f"Disciplina não encontrada, "
+            print(f"\nDisciplina não encontrada, "
                   f"tente novamente com um cadastro existente, ou crie um novo.")
         else:
             print(error_undefined)
@@ -894,9 +942,17 @@ class Turma:
         # IMPLEMENT: order the list instead of just printing it
             print(f"\nTotal de {len(self.lista)} turma(s) encontrada(s): ")
             for dicionario_listar in self.lista:
-                print(f"Turma N.º{dicionario_listar["turma_codigo"]}   "
-                      f"Professor(a) N.º{dicionario_listar["professor_codigo"]}   "
-                      f"Disciplina N.º{dicionario_listar["disciplina_codigo"]}")
+                professor_nome = None
+                disciplina_nome = None
+                for dicionario_professor in self.professor_lista:
+                    professor_nome = dicionario_professor["nome"]
+                    break
+                for dicionario_disciplina in self.disciplina_lista:
+                    disciplina_nome = dicionario_disciplina["nome"]
+                    break
+                print(f"Turma N.º{dicionario_listar["turma_codigo"]}    "
+                      f"Disciplina: {disciplina_nome}    "
+                      f"Professor(a): {professor_nome}")
         method_press_enter()
         print(str_op_menu)
         method_op_menu(main_choice)
@@ -955,7 +1011,7 @@ class Turma:
                     elif opcao_modificar == '2':
                         codigo_antigo_professor = turma_modificar["professor_codigo"]
                         codigo_novo_professor = int(input("\nInforme o código do(a) professor(a) novo(a): "))
-                        for check_professor in lista_professores:
+                        for check_professor in self.professor_lista:
                             if codigo_novo_professor == check_professor["codigo"]:
                                 turma_modificar["professor_codigo"] = codigo_novo_professor
                                 print(f"\nCódigo modificado com êxito.\n"
@@ -972,7 +1028,7 @@ class Turma:
                     elif opcao_modificar == '3':
                         codigo_antigo_disciplina = turma_modificar["disciplina_codigo"]
                         codigo_novo_disciplina = int(input("\nInforme o código da disciplina nova: "))
-                        for check_disciplina in lista_disciplinas:
+                        for check_disciplina in self.disciplina_lista:
                             if codigo_novo_disciplina == check_disciplina["codigo"]:
                                 turma_modificar["disciplina_codigo"] = codigo_novo_disciplina
                                 print(f"\nCódigo modificado com êxito.\n"
@@ -1044,22 +1100,18 @@ class Matricula:
         try:
             with open("matriculas.json", "r", encoding="utf-8") as file:
                 self.lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.lista = []
         try:
             with open("estudantes.json", "r", encoding="utf-8") as file:
                 self.estudante_lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
-            print("Comando indisponível: Nenhum(a) estudante foi encontrado(a).")
-            print(str_main_menu)
-            method_main_menu()
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.estudante_lista = []
         try:
             with open("turmas.json", "r", encoding="utf-8") as file:
                 self.turma_lista = json.load(file)
-        except FileNotFoundError or json.JSONDecodeError:
-            print("Comando indisponível: Nenhuma turma foi encontrada.")
-            print(str_main_menu)
-            method_main_menu()
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.turma_lista = []
 
     def incluir(self, str_op_menu, main_choice):
         def text_success():
@@ -1072,17 +1124,18 @@ class Matricula:
         for check_estudante in self.estudante_lista:
             if check_estudante["codigo"] == estudante_codigo:
                 estudante_existe = True
+                estudante_nome = check_estudante["nome"]
         for check_turma in self.turma_lista:
             if check_turma["turma_codigo"] == turma_codigo:
                 turma_existe = True
         if turma_existe and estudante_existe:
             if len(self.lista) == 0:
             # first we're checking if the list is empty
-                matricula_dict = {
-                    "estudante_codigo": estudante_codigo,
-                    "turma_codigo": turma_codigo,
+                dictionary = {
+                    "estudante_codigo": int(estudante_codigo),
+                    "turma_codigo": int(turma_codigo),
                 }
-                self.lista.append(matricula_dict)
+                self.lista.append(dictionary)
                 with open("matriculas.json", "w", encoding="utf-8") as file:
                     json.dump(self.lista, file, ensure_ascii=False)
                 text_success()
@@ -1091,23 +1144,23 @@ class Matricula:
 
                 # if none of the info is the same we're gonna go ahead and create a dictionary for that student
                 if turma_existe and estudante_existe:
-                    matricula_dict = {
-                        "estudante_codigo": estudante_codigo,
-                        "turma_codigo": turma_codigo,
+                    dictionary = {
+                        "estudante_codigo": int(estudante_codigo),
+                        "turma_codigo": int(turma_codigo),
                     }
-                    self.lista.append(matricula_dict)
+                    self.lista.append(dictionary)
                     with open("matriculas.json", "w", encoding="utf-8") as file:
                         json.dump(self.lista, file, ensure_ascii=False)
                     text_success()
                 # if any info is repeated we'll tell the user what is
         elif not turma_existe and not estudante_existe:
-            print(f"Erro: Turma e estudante não encontrados, "
+            print(f"\nTurma e estudante não encontrados, "
                   f"tente novamente com cadastros existentes, ou crie cadastros novos.")
         elif not turma_existe and estudante_existe:
-            print(f"Erro: Turma não encontrada, "
+            print(f"\nTurma não encontrada, "
                   f"tente novamente com um cadastro existente, ou crie um novo.")
         elif turma_existe and not estudante_existe:
-            print(f"Erro: Estudante não encontrado(a), "
+            print(f"\nEstudante não encontrado(a), "
                   f"tente novamente com um cadastro existente, ou crie um novo.")
         # SOMEONE should probably fix this inconsistency with method_press_enter...
         method_press_enter()
@@ -1123,8 +1176,11 @@ class Matricula:
         # IMPLEMENT: order the list instead of just printing it
             print(f"\nTotal de {len(self.lista)} matrícula(s) encontrada(s): ")
             for dicionario_listar in self.lista:
-                print(f"Estudante N.º{dicionario_listar["estudante_codigo"]}   "
-                      f"Turma N.º{dicionario_listar["turma_codigo"]}")
+                estudante_nome = None
+                for dicionario_estudante in self.estudante_lista:
+                    estudante_nome = dicionario_estudante["nome"]
+                print(f"Estudante N.º{dicionario_listar["estudante_codigo"]} - {estudante_nome}"
+                      f"    Turma N.º{dicionario_listar["turma_codigo"]}")
         method_press_enter()
         print(str_op_menu)
         method_op_menu(main_choice)
@@ -1201,7 +1257,7 @@ class Matricula:
                                     json.dump(self.lista, file, ensure_ascii=False)
                                 method_press_enter()
                             else:
-                                print(f"\nErro: Turma não encontrada, "
+                                print(f"\nTurma não encontrada, "
                                       f"tente novamente com uma turma existente, "
                                       f"ou crie um novo cadastro.")
                                 method_press_enter()
@@ -1258,12 +1314,13 @@ class Matricula:
         print(str_op_menu)
         method_op_menu(main_choice)
 
-# start application
+# instancing
 estudante = Estudante()
 disciplina = Disciplina()
 professor = Professor()
 turma = Turma()
 matricula = Matricula()
 
+# start application
 print(str_main_menu)
 method_main_menu()
